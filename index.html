@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie DB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="./Images/icons8-movie-32.png" type="image/x-icon">
+
+</head>
+<body>
+  <header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <img width="50" height="50" src="https://img.icons8.com/3d-fluency/94/documentary.png" alt="documentary"/>
+        <span class="ml-3 text-xl">Movie DB</span>
+      </a>
+      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+        <a href="#" class="mr-5 hover:text-gray-900">Home</a>
+        <a href="" class="mr-5 hover:text-gray-900">About</a>
+        <a href="" class="mr-5 hover:text-gray-900">Privacy Policy</a>
+        <a href="" class="mr-5 hover:text-gray-900">Contact</a>
+      </nav>
+      
+    </div>
+  </header>
+    <div class="p-5 flex flex-col md:flex md:flex-row">
+      <section class="text-gray-600 body-font w-full md:w-1/2">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-col text-center w-full mb-12">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Movie DB</h1>
+            <p class="lg:w-full mx-auto leading-relaxed text-base">IMDb (an acronym for Internet Movie Database) is an online database that provides information related to films, television series, podcasts, home videos, video games, and streaming content. </p>
+          </div>
+          <div class="flex lg:w-full w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+              <label for="movie-name" class="leading-7 text-sm text-gray-600">Movie Name</label>
+              <input type="text" placeholder="Enter Movie Name" id="movie-name" name="movie-name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-green-500 focus:bg-transparent focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            </div>
+            
+            <button onclick="getdb()" id="getdb" class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">
+              Get</button>
+          </div>
+        </div>
+      </section>
+      <div class="w-full md:w-1/2">
+        <img src="./Images/Movie_Night.gif" alt="">
+      </div>
+    </div>
+      <div id="result" style="display: none;"  class="border border-5 rounded-2xl shadow-2xl mx-auto p-10 w-2/3 mb-10" >
+<p class="text-4xl text-center">Movie Details</p>
+<div class="flex flex-col md:flex md:flex-row mt-10 md:gap-10">
+  <div class="w-full md:w-1/2">
+    <img id="pstr" class="w-full object-contain mx-auto" src="" alt="">
+  </div>
+  <div class="w-full md:w-1/2 p-5">
+    <p class="text-xl mb-2">Title : <span id="title"></span> </p>
+    <hr>
+  <p class="text-xl mb-2">Released : <span id="released"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">RunTime : <span id="runtime"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Genre : <span id="genre"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Actors : <span id="actors"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Director :  <span id="director"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Writer : <span id="writer"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Plot : <span id="plot"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">Language :  <span id="lang"></span></p>
+  <hr>
+  <p class="text-xl mb-2">Awards : <span id="awards"></span> </p>
+  <hr>
+  <p class="text-xl mb-2">imdbRating : <span id="imdbRating"></span></p>
+  <hr>
+  <p class="text-xl mb-2">imdbVotes : <span id="imdbVotes"></span></p>
+  <hr>
+  </div>
+</div>
+      </div>
+      <script>
+        let mvonm = document.getElementById("movie-name");
+        let result = document.getElementById("result")
+        let pstr = document.getElementById("pstr")
+        let title = document.getElementById("title")
+        let released = document.getElementById("released")
+        let actors = document.getElementById("actors")
+        let director = document.getElementById("director")
+        let writer = document.getElementById("writer")
+        let plot = document.getElementById("plot")
+        let lang = document.getElementById("lang")
+        let awards = document.getElementById("awards")
+        let imdbRating = document.getElementById("imdbRating")
+        let imdbVotes = document.getElementById("imdbVotes")
+        let runtime = document.getElementById("runtime")
+        let genre = document.getElementById("genre")
+        // let getdb = document.getElementById("getdb")
+        async function getdb(){
+            var response = await fetch(`http://www.omdbapi.com/?t=${mvonm.value}&apikey=c429066e`);
+            var resu = await response.json()
+            console.log(resu)
+            result.style = ""
+            pstr.src = resu.Poster;
+            title.innerHTML = resu.Title;
+            released.innerHTML = resu.Released;
+            actors.innerHTML = resu.Actors;
+            director.innerHTML = resu.Director;
+            writer.innerHTML = resu.Writer;
+            plot.innerHTML = resu.Plot;
+            lang.innerHTML = resu.Language;
+            awards.innerHTML = resu.Awards;
+            imdbRating.innerHTML = resu.imdbRating;
+            runtime.innerHTML = resu.Runtime;
+            genre.innerHTML = resu.Genre;
+            imdbVotes.innerHTML = resu.imdbVotes;
+            document.getElementById('result').scrollIntoView();
+        }
+
+
+      </script>
+    
+</body>
+</html>
